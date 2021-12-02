@@ -18,7 +18,7 @@ deployment:
       memory: 90Mi
       cpu: 350m
     limits:
-      memory: 128mi 
+      memory: 128Mi
       cpu: 500m
 
 image:
