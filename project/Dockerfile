@@ -2,7 +2,7 @@ FROM python:2.7
 LABEL maintainer="Robinson Rodriguez"
 
 WORKDIR /app
-COPY techtrends .
+COPY ./project/techtrends .
 RUN pip install -r requirements.txt
 
 EXPOSE 3111
