@@ -1,0 +1,27 @@
+namespace:
+  name: sandbox
+
+service:
+  port: 4111
+  targetPort: 3111
+  protocol: TCP
+
+deployment:
+  replicaCount: 1
+  containerPort: 3111
+  livenessProbe:
+    path: /healthz
+  readinessProbe:
+    path: /healthz
+  resources:
+    requests:
+      memory: 64Mi
+      cpu: 250m
+    limits:
+      memory: 128mi
+      cpu: 500m
+
+image:
+  repository: rfrodriguez/techtrends
+  tag: latest
+  pullPolicy: IfNotPresent
