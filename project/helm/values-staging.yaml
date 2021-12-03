@@ -6,9 +6,9 @@ service:
   targetPort: 3111
   protocol: TCP
 
-livenessProbePath: /healtz
+livenessProbePath: /healthz
 livenessProbePort: 3111
-readinessProbePath: /healtz
+readinessProbePath: /healthz
 readinessProbePort: 3111
 
 deployment:
