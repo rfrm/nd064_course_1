@@ -8,10 +8,12 @@ spec:
   selector:
     matchLabels:
       app: techtrends
+      namespace: {{ .Values.namespace.name }}
   template:
     metadata:
       labels:
         app: techtrends
+        namespace: {{ .Values.namespace.name }}
     spec:
       containers:
       - name: techtrends
