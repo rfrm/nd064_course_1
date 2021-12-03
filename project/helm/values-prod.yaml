@@ -6,13 +6,14 @@ service:
   targetPort: 3111
   protocol: TCP
 
+livenessProbePath: /healtz
+livenessProbePort: 3111
+readinessProbePath: /healtz
+readinessProbePort: 3111
+
 deployment:
   replicaCount: 5
   containerPort: 3111
-  livenessProbe:
-    path: /healthz
-  readinessProbe:
-    path: /healthz
   resources:
     requests:
       memory: 128Mi

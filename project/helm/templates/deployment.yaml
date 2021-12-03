@@ -20,11 +20,11 @@ spec:
           - containerPort: {{ .Values.deployment.containerPort }}
         livenessProbe:
           httpGet:
-            path: {{ .Values.deployment.livenessProbe.path }}
-            port: 3111
+            path: {{ .Values.livenessProbePath }}
+            port: {{ .Values.livenessProbePort }}
         readinessProbe:
           httpGet:
-            path: {{ .Values.deployment.readinessProbe.path }}
-            port: 3111
+            path: {{ .Values.readinessProbePath }}
+            port: {{ .Values.readinessProbePort }}
         resources:
 {{ toYaml .Values.deployment.resources | indent 10 }}

@@ -5,15 +5,14 @@ import logging
 from flask import Flask, jsonify, json, render_template, request, url_for, redirect, flash
 from werkzeug.exceptions import abort
 
-db_connection_count = 0
+def handle_database_error(e):
+    return render_template('error.html'), 500
 
 # Function to get a database connection.
 # This function connects to database with the name `database.db`
 def get_db_connection():
-    global db_connection_count
-
     connection = sqlite3.connect('database.db')
-    db_connection_count += 1
+    app.config['db_connection_count'] += 1
     connection.row_factory = sqlite3.Row
     return connection
 
@@ -33,7 +32,7 @@ def get_posts_count():
 
 # Define the Flask application
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'your secret key'
+app.config['db_connection_count'] = 0
 
 # Define the main route of the web application 
 @app.route('/')
@@ -89,6 +88,7 @@ def healthz():
 @app.route('/metrics')
 def metrics():
     post_count = get_posts_count()
+    db_connection_count = app.config['db_connection_count']
     return json.jsonify(db_connection_count=db_connection_count, post_count=post_count)
 
 # start the application on port 3111
@@ -96,7 +96,8 @@ if __name__ == "__main__":
     logging.basicConfig(
             format="%(levelname)s:%(name)s:%(asctime)s, %(message)s",
             datefmt="%d/%m/%Y, %H:%M:%S",
-            handlers=[logging.StreamHandler(),logging.StreamHandler(stream=sys.stdout)],
+            handlers=[logging.StreamHandler(stream=sys.stderr),logging.StreamHandler(stream=sys.stdout)], # According to the docs if stream is not specified, then it logs to sys.stderr by default
             level=logging.DEBUG)
 
+    app.register_error_handler(sqlite3.Error, handle_database_error)
     app.run(host='0.0.0.0', port='3111')
